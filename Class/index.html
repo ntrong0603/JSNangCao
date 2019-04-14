@@ -1,0 +1,159 @@
+<html>
+<head>
+	<title>Tao this Class JS</title>
+</head>
+<body>
+	<script>
+		function User(){
+			// thuoc tinh
+			var userName = "";
+			var password = "";
+
+			//phuong thuc
+			this.setInfo = function(userName, password){
+				this.userName = userName;
+				this.password = password;
+			}
+
+			this.checkLogin = function(){
+				return (this.userName === "admin" && this.password === "123");
+			}
+
+
+			//lop thong bao loi
+			this.throwLogin = function(){
+				throw new Error('Invalid username and password');
+			};
+
+			this.throwSession = function(){
+				throw new Error('Your request is timeout');
+			};
+
+			this.showUser = function(){
+					console.log(this);
+					console.log(this.userName);
+					console.log(this.password);
+			}.bind(this);
+
+			return this;
+		}
+		// bo sung phuong thuc
+		User.prototype.showUser = function(){
+			return this.userName;
+		}
+
+		// //su dung phuong thuc tao object
+		// var User = {
+
+		// 	// Thuộc tính
+		// 	username : "",
+		// 	password : "",
+
+		// 	// Phương thức
+		// 	setInfo : function(username, password){
+		// 		this.username = username;
+		// 		this.password = password;
+		// 	},
+		// 	checkLogin : function(){
+		// 		return (this.username === 'admin' && this.password === '@123');
+		// 	}
+
+		// };
+		// //cah dung
+		// User.setInfo('admin', '@123');
+		// if (User.checkLogin()){
+		//     alert('Đăng nhập thành công');
+		// }
+		// else{
+		//     alert('Đăng nhập thất bại');
+		// }
+		// 
+		// 
+		// //Sử dụng Singleton Object
+		// var User = new function(){
+		// // Thuộc tính
+		//    this.username = '';
+		//    this.password = '';
+		//     // Phương thức
+		//    this.setInfo = function(username, password){
+		//        this.username = username;
+		//        this.password = password;
+		//    };    
+		//    this.checkLogin = function(){
+		//        return (this.username === 'admin' && this.password === '@123');
+		//    };
+		// }
+		
+
+		// closure la ham trong ham
+		// Bước 1: Tạo hàm closure
+		var message = 'Biên toàn cục';
+		function showMessage()
+		{
+			var message = 'Biến cục bộ của hàm cha';
+			return function(){
+				var message = 'Biến cục bộ closure';
+				alert(message);
+			};
+		}
+
+		// Bước 2: khởi tạo hàm closure
+		var messageFunc = showMessage();
+
+		// Bước 3: Chạy hàm closure
+		//messageFunc();
+
+
+		// // callback
+		// // Hàm tạo chuỗi mật khẩu
+		// function createPassword(callback) {
+		// 	return callback('freetuts.net');
+		// }
+
+		// // Sử dụng
+		// var password = createPassword(function (secret_key) {
+		// 	return secret_key;
+		// });
+
+		// console.log(password);
+	</script>
+
+
+	<!-- su dung-->
+	<script>
+
+		var user = new User();
+		user.setInfo("admin", "123");
+		try{
+			if(user.checkLogin()){
+				console.log("dang nhap thanh cong");
+			}
+			else{
+				// throw new Error('Invalid username and password');
+				user.throwLogin();
+			}
+		}
+		catch(e){
+			console.log(e);
+		}finally{
+			// finally luon duoc thuc hien, option tuy chon
+			console.log('End');
+		}
+
+		// callback su ding bind
+		function test(callback){
+			callback();
+		}
+		//callback khong bind
+		function test2(callback, callbackObject){
+			var userName = "admin2";
+			var password = "1233";
+    		callback.apply(callbackObject, [userName, ]);
+		}
+		test(user.showUser);
+		test2(user.setInfo, user);
+		test(user.showUser);
+		
+	</script>
+</body>
+</html>
